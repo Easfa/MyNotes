@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "Notes";
+}
+@model IEnumerable<Note>
+<div class="container p-3">
+    <div class="row">
+    <div class="col-3">
+        <a asp-controller="Notes" asp-action="AddNote" class="createButton">+</a>
+    </div>
+    <div>
+        @if (Model.Count() > 0)
+        {
+                <table class="table table-bordered border-success" style="width:100%">
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                                <tr>
+                                <td width="85%">@item.NoteName</td>
+                                    <td class="text-center">
+                                        <a asp-controller="Notes" asp-action="SubIndex" asp-route-id="@item.NoteId" class="btn btn-success w-100">Alt Notları Göster</a>
+                                    </td>
+                                    <td class="text-center">
+                                    <a asp-controller="Notes" asp-action="SubNoteAdd" asp-route-id="@item.NoteId" class="btn btn-success w-100">Alt Not Ekle</a>
+                                    </td>
+                                    <td class="text-center">
+                                    <a asp-controller="Notes" asp-action="Delete" asp-route-id="@item.NoteId" class="btn btn-danger w-100">Sil</a>
+                                    </td>
+                                </tr>
+                    }
+                    </tbody>
+                </table>
+        }
+        else
+        {
+                <p>No items created yet</p>
+
+        }
+    </div>
+</div>
+</div>

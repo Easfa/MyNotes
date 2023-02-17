@@ -9,5 +9,6 @@ namespace MyNotes.Data
 
         //DbSets Area
         public DbSet<Note> Notes { get; set; }
+        public DbSet<SubNote> SubNotes { get; set; }
     }
 }
