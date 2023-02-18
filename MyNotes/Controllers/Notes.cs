@@ -9,18 +9,26 @@ namespace MyNotes.Controllers
     {
         private AppDbContext _db;
         public Notes(AppDbContext db) { _db = db; }
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            return View(_db.Notes.Select(x => x));
-        }
-        public IActionResult SubIndex(int id) 
-        {
-            return View(_db.SubNotes.Where(x => x.NoteId == id));
+            if(id == 0) 
+            {
+                return View(_db.Notes.Where(x => x.NoteSubId == null));
+            }
+            else 
+            {
+                return View(_db.Notes.Where(x=> x.NoteSubId == id));
+            }
         }
         public IActionResult AddNote(int id)
         {
             var note = new Note();
-            return View("AddNote");
+            if (id != 0) 
+            {
+                note.NoteSubId = id;
+            }
+            
+            return View(note);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -31,30 +39,16 @@ namespace MyNotes.Controllers
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
-        {
-            var i = _db.Notes.Find(id);
-            if (i == null)
+        {   
+            if(id != 0) 
             {
-                return NotFound();
+                var main = _db.Notes.Find(id);
+                var all = _db.Notes.Where(x => x.NoteSubId == id);
+                _db.Notes.RemoveRange(all);
+                _db.Notes.Remove(main);
+                _db.SaveChanges();
             }
-            _db.Notes.Remove(i);
-            _db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public IActionResult SubNoteAdd(int id)
-        {
-            SubNote subNote = new SubNote();
-            subNote.NoteId = id;
-            return View(subNote);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SubNoteAdd(SubNote subNote)
-        {
-            _db.Add(subNote);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
     }
 }

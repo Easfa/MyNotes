@@ -11,5 +11,7 @@ namespace MyNotes.Models
         public int NoteId { get; set; }
 
         public string? NoteName { get; set; }
+
+        public int? NoteSubId { get; set; }
     }
 }

@@ -17,7 +17,11 @@
     <div class="form-floating">
             <input asp-for="NoteName" class="form-control" placeholder="" style="height: 100px"/>
     </div>
-    </div>    
+    @if(Model.NoteSubId != 0)
+            {
+                @Html.Hidden("NoteSubId", Model.NoteSubId)
+            }
+        </div>    
     <div class="row pt-4">
         <div class ="text-lg-end">
                 <input type="submit" class="btn btn-info w-100" value="Create" />
